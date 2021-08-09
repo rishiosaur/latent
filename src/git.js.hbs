@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+const { execSync } = require(`child_process`)
+const { existsSync, exists } = require(`fs`)
+const { join } = require(`path`)
+
+const local = (p) => join(`/opt/latent/{{id}}`, p)
+
+if (existsSync(local(`build.sh`))) {
+    const out = execSync(`bash ${local(`build.sh`)}`).toString()
+    console.log(out)
+}
+
+console.log(execSync(`systemctl stop {{id}}.latent.service`).toString())
+console.log(execSync(`systemctl daemon-reload`).toString())
+console.log(execSync(`systemctl restart {{id}}.latent.service`).toString())
+console.log(execSync(`systemctl enable {{id}}.latent.service`,).toString())
+
+console.log(execSync(`systemctl status {{id}}.latent.service`).toString())
+

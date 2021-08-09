@@ -10,9 +10,9 @@ import { readdir, writeFile, readFile } from 'fs/promises'
 import path from 'path'
 import { readFileSync } from 'fs'
 import { execSync, exec } from 'child_process'
+import { stdout } from 'process'
 import { getPort } from './ports'
 import { getConfig } from './config'
-import { stdout } from 'process'
 require('better-logging')(console)
 
 export const ssh = new NodeSSH()
@@ -319,7 +319,7 @@ program
 		}
 
 		const latent = JSON.parse(readFileSync(local('latent.json')).toString())
-		if (latent['domain']) {
+		if (latent.domain) {
 			console.log(latent.domain)
 		} else {
 			console.error(

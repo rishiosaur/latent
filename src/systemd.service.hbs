@@ -1,0 +1,20 @@
+[Unit]
+Description={{site}}
+After=network.target
+Wants=nginx.service
+ConditionPathIsDirectory=/opt/latent/{{site}}
+ConditionFileIsExecutable=/opt/latent/{{site}}/entrypoint.sh
+
+[Service]
+WorkingDirectory=/opt/latent/{{site}}
+Environment=PORT={{port}}
+ExecStart=bash /opt/latent/{{site}}/entrypoint.sh
+Restart=on-failure
+RestartSec=5
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

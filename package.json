@@ -6,7 +6,7 @@
 		"latent": "build/index.js"
 	},
 	"scripts": {
-		"build": "rm -rf build && tsc && cp -r src/*.hbs build/",
+		"build": "rm -rf build && tsc && cp -r src/*.hbs build/ && chmod +x build/index.js",
 		"format": "prettier --single-quote --write './**/*'",
 		"format:check": "prettier --single-quote --check './**/*'",
 		"lint": "eslint \"./**/*.{js,ts,tsx,jsx}\" --quiet --fix",

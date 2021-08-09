@@ -6,9 +6,8 @@ export const viewPort = async (id: string) => {
 	const response = await ssh.exec(`grep -rnwl ${portsdir} -e`, [id])
 	if (response.length === 0) {
 		return null
-	} else {
-		return parseInt(response.replace(portsdir, '').replace('/', ''))
 	}
+	return parseInt(response.replace(portsdir, '').replace('/', ''))
 }
 
 const portInDir = async (port) => {
@@ -35,8 +34,7 @@ export const getPort = async (id: string) => {
 	const port = Math.floor(Math.random() * (65535 - 1024) + 1024)
 	if ((await portInDir(port)) || (await portIsInUse(port))) {
 		return getPort(id)
-	} else {
-		await ssh.exec(`echo '${id}' > ${portsdir}/${port}`, [])
-		return port
 	}
+	await ssh.exec(`echo '${id}' > ${portsdir}/${port}`, [])
+	return port
 }

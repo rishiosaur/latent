@@ -2,17 +2,17 @@
 
 import { Command } from 'commander'
 import { NodeSSH } from 'node-ssh'
-import { getConfig } from './config'
 import expandTilde from 'expand-tilde'
-require('better-logging')(console)
 import { nanoid } from 'nanoid'
 import { compile } from 'handlebars'
 import { readdir, writeFile } from 'fs/promises'
 
 import path from 'path'
-import { getPort } from './ports'
 import { readFileSync } from 'fs'
 import { execSync, exec } from 'child_process'
+import { getPort } from './ports'
+import { getConfig } from './config'
+require('better-logging')(console)
 
 export const ssh = new NodeSSH()
 const program = new Command()
@@ -102,7 +102,6 @@ program
 
 		await ssh.exec(`sudo nginx -s reload`, [])
 		await ssh.dispose()
-		return
 	})
 
 program.parse(process.argv)

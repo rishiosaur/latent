@@ -6,19 +6,26 @@
 		"skipLibCheck": true,
 		"strict": false,
 		"forceConsistentCasingInFileNames": true,
-		"noEmit": true,
-		"esModuleInterop": true,
-		"module": "esnext",
+		"noEmit": false,
+		"outDir": "build/",
+		"module": "commonjs",
 		"moduleResolution": "node",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
+		"allowSyntheticDefaultImports": true,
+
+		"sourceMap": true,
+
+		"esModuleInterop": true,
+
+		"isolatedModules": false,
 		"jsx": "preserve"
 	},
 	"include": [
 		"next-env.d.ts",
 		"**/*.ts",
+		"**/*.js",
+		"**/*.jsx",
 		"**/*.tsx",
-		"pages/articles/[id].jsx"
+		"**/*.hbs"
 	],
 	"exclude": ["node_modules"]
 }

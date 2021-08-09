@@ -2,10 +2,11 @@
 	"name": "perfect-next",
 	"version": "0.1.0",
 	"private": true,
+	"bin": {
+		"latent": "build/index.js"
+	},
 	"scripts": {
-		"dev": "next dev",
-		"build": "next build",
-		"start": "next start",
+		"build": "rm -rf build && tsc && cp -r src/*.hbs build/",
 		"format": "prettier --single-quote --write './**/*'",
 		"format:check": "prettier --single-quote --check './**/*'",
 		"lint": "eslint \"./**/*.{js,ts,tsx,jsx}\" --quiet --fix",
@@ -14,7 +15,16 @@
 		"check:fix": "yarn run format && yarn run lint"
 	},
 	"dependencies": {
+		"@types/commander": "^2.12.2",
+		"@types/expand-tilde": "^2.0.0",
+		"better-logging": "^4.5.0",
+		"commander": "^8.1.0",
+		"expand-tilde": "^2.0.2",
+		"handlebars": "^4.7.7",
+		"inquirer": "^8.1.2",
+		"nanoid": "^3.1.23",
 		"next": "10.0.0",
+		"node-ssh": "^12.0.0",
 		"react": "17.0.1",
 		"react-dom": "17.0.1"
 	},

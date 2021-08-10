@@ -4,11 +4,12 @@ import { Command } from 'commander'
 import { NodeSSH } from 'node-ssh'
 import expandTilde from 'expand-tilde'
 import { nanoid } from 'nanoid'
+import inquirer from 'inquirer'
 import { compile } from 'handlebars'
 import { readdir, writeFile, readFile } from 'fs/promises'
 
 import path from 'path'
-import { readFileSync } from 'fs'
+import { mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { execSync, exec } from 'child_process'
 import { stdout } from 'process'
 import { getPort } from './ports'
@@ -326,6 +327,75 @@ program
 				'Could not find domain for Latent project. Are you sure it was set up correctly?'
 			)
 		}
+	})
+
+program
+	.command('server-setup')
+	.description('Set up Latent for your server')
+	.action(async () => {
+		const { ip, domain } = await inquirer.prompt([
+			{
+				type: 'input',
+				name: 'ip',
+				message: "What is your machine's public IP address?",
+			},
+			{
+				type: 'input',
+				name: 'domain',
+				message: 'What is the root domain of your server?',
+			},
+		])
+
+		const user = execSync('whoami').toString()
+		console.log('Installing NGINX')
+		execSync(`sudo apt update && sudo apt install nginx`, { stdio: 'inherit' })
+		console.log('Installing LetsEncrypt')
+		execSync(`sudo snap install core; sudo snap refresh core`, {
+			stdio: 'inherit',
+		})
+		execSync(`sudo snap install --classic certbot`, { stdio: 'inherit' })
+		execSync(`sudo ln -s /snap/bin/certbot /usr/bin/certbot`, {
+			stdio: 'inherit',
+		})
+		execSync(`sudo certbot --nginx`, { stdio: 'inherit' })
+		console.log(
+			"All software has been installed! There's a few more things you need to do to get Latent working, though."
+		)
+		console.info(
+			`Add '${ip}' as the value of an A address (subdomain *.${domain}) in your DNS settings.`
+		)
+		console.info(`On your client, run 'latent client-setup'.`)
+	})
+
+program
+	.command('client-setup')
+	.description('Set up Latent for your client')
+	.action(async () => {
+		const x = await inquirer.prompt([
+			{
+				type: 'input',
+				name: 'host',
+				message: "What is your machine's public IP address?",
+			},
+			{
+				type: 'input',
+				name: 'username',
+				message: 'What is the username you use to SSH in?',
+			},
+			{
+				type: 'input',
+				name: 'password',
+				message: 'What is the password you use to SSH in?',
+			},
+		])
+
+		mkdirSync(expandTilde('~/.config/latent'))
+		writeFileSync(
+			expandTilde('~/.config/latent/config.json'),
+			JSON.stringify(x, null, 2)
+		)
+
+		console.info("You're all set!")
 	})
 
 program.parse(process.argv)

@@ -1,6 +1,6 @@
 {
 	"name": "latent-deploy",
-	"version": "0.0.3-development",
+	"version": "0.0.3",
 	"private": false,
 	"bin": {
 		"latent": "build/index.js"

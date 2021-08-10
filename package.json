@@ -1,5 +1,5 @@
 {
-	"name": "@rishiosaur/latent",
+	"name": "latent-deploy",
 	"version": "0.0.1-development",
 	"private": false,
 	"bin": {
